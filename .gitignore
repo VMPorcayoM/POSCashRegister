@@ -1,0 +1,42 @@
+
+# VS Code specific
+/.vscode
+/.vs
+
+# User-specific files
+*.suo
+*.user
+*.vspscc
+*.userprefs
+vssscc
+
+# Build files
+*.exe
+*.dll
+*.pdb
+*.config
+*.nupkg
+*.symbols
+bin/
+obj/
+
+# Output files
+*.log
+
+
+# Temporary files
+*.tmp
+*.lockfile
+
+
+# Build output
+**/bin/**
+**/obj/**
+
+# Visual Studio solution and project files
+**/.vs/**
+**/*.suo**
+**/*.user**
+**/*.vspscc**
+**/*.userprefs**
+**/vssscc**
