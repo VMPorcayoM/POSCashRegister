@@ -20,9 +20,14 @@ jobs:
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 8.0.x
+    # Restore dependencies for the test project
     - name: Restore dependencies
-      run: dotnet restore POSCashRegisterSolution.sln
+      run: dotnet restore POSCashRegister.Tests/PosCashRegister.Tests.csproj
+
+    # Build the test project
     - name: Build
-      run: dotnet build POSCashRegisterSolution.sln --no-restore
+      run: dotnet build POSCashRegister.Tests/PosCashRegister.Tests.csproj --no-restore
+
+    # Run tests for the test project
     - name: Test
-      run: dotnet test POSCashRegisterSolution.sln --no-build --verbosity normal
+      run: dotnet test POSCashRegister.Tests/PosCashRegister.Tests.csproj --no-build --verbosity normal
