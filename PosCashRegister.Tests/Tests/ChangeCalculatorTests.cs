@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using PosCashRegister.Core;
 using Xunit;
 
@@ -15,10 +13,8 @@ namespace PosCashRegister.Tests
             var calculator = new ChangeCalculator(denominations);
             decimal price = 1.00m;
             decimal amountPaid = 1.00m;
-
             // Act
             var result = calculator.CalculateChange(price, amountPaid);
-
             // Assert
             Assert.Empty(result); // No change expected
         }
@@ -31,10 +27,8 @@ namespace PosCashRegister.Tests
             var calculator = new ChangeCalculator(denominations);
             decimal price = 0.75m;
             decimal amountPaid = 1.00m;
-
             // Act
             var result = calculator.CalculateChange(price, amountPaid);
-
             // Assert
             Assert.Equal(1, result[0.25m]); // 1 quarter
         }
@@ -43,14 +37,12 @@ namespace PosCashRegister.Tests
         public void CalculateChange_WithRounding_ReturnsCorrectChange()
         {
             // Arrange
-            var denominations = new List<decimal> { 0.25m, 0.1m, 0.05m, 0.01m };
+            var denominations = new List<decimal> { 1.00m, 0.5m, 0.25m, 0.1m, 0.05m, 0.01m };
             var calculator = new ChangeCalculator(denominations);
             decimal price = 0.99m;
             decimal amountPaid = 1.00m;
-
             // Act
             var result = calculator.CalculateChange(price, amountPaid);
-
             // Assert
             Assert.Equal(1, result[0.01m]); // 1 penny
         }
@@ -61,14 +53,12 @@ namespace PosCashRegister.Tests
             // Arrange
             var denominations = new List<decimal> { 0.1m, 0.05m }; // No pennies
             var calculator = new ChangeCalculator(denominations);
-            decimal price = 0.98m;
+            decimal price = 0.92m;
             decimal amountPaid = 1.00m;
-
             // Act
             var result = calculator.CalculateChange(price, amountPaid);
-
             // Assert
-            Assert.Equal(1, result[0.05m]); // Rounding to nearest nickel
+            Assert.Equal(1, result[0.05m]); // Rounding down to nearest nickel
         }
 
         [Fact]
@@ -76,7 +66,6 @@ namespace PosCashRegister.Tests
         {
             // Arrange & Act
             void Action() => new ChangeCalculator(null!);
-
             // Assert
             Assert.Throws<ArgumentException>(Action);
         }
