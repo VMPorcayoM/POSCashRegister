@@ -78,5 +78,16 @@ namespace PosCashRegister.Utils
                               Console.WriteLine("Invalid input. Please enter a valid decimal value.");
                   }
             }
+            public static void DisplayChange(Dictionary<decimal, int> change)
+            {
+                  if (change.Count == 0)
+                        Console.WriteLine("No change to be returned.");
+                  else
+                  {
+                        Console.WriteLine("Change to be returned:");
+                        foreach (var item in change)
+                              Console.WriteLine($"{item.Value} x {item.Key:C}");
+                  }
+            }
       }
 }

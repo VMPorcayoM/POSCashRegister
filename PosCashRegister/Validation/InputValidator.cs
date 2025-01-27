@@ -36,8 +36,6 @@ namespace PosCashRegister.Validation
             // Check if the amount paid is greater than or equal to the price
             if (amountPaid < price)
                 return false;
-            // Sort denominations in descending order to prioritize higher values first
-            denominations.Sort((a, b) => b.CompareTo(a));
             // Iterate through the denominations to calculate if the remaining amount is valid
             decimal remainingAmount = amountPaid;
             foreach (var denomination in denominations)
