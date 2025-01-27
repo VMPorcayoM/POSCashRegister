@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using PosCashRegister.Configuration;
 using PosCashRegister.Core;
+using PosCashRegister.Utils;
 
 namespace PosCashRegister
 {
@@ -16,38 +17,29 @@ namespace PosCashRegister
                 // Load currency configuration
                 var currencyConfig = new CurrencyConfig(currencyFilePath);
                 // Global configuration
-                // Prompt user to select an available country
-                string countries = String.Join(", ", currencyConfig.GetAvailableCountries());
-                Console.WriteLine($"Available countries: {countries}");
-                Console.Write("Enter country code: ");
-                string countryCode = Console.ReadLine()!.Trim().ToUpper();
+                // Get available countries and prompt for country denominations
+                var availableCountries = currencyConfig.GetAvailableCountries();
+                string countryCode = ConsoleHandler.PromptCountryCode(availableCountries);
                 // Get the denominations for the selected country
                 var denominations = currencyConfig.GetDenominations(countryCode);
                 // Create a change calculator
                 var calculator = new ChangeCalculator(denominations);
-                // Keep alive the program
+                // Main loop to keep the program alive
                 do
                 {
-                    // Input price and amount paid
-                    Console.Write("Enter price: ");
-                    decimal price = decimal.Parse(Console.ReadLine() ?? "0");
-                    decimal amountPaid;
-                    do
-                    {
-                        Console.Write("Enter amount paid: ");
-                        amountPaid = decimal.Parse(Console.ReadLine() ?? "0");
-                        if (InputValidator.IsAmountValid(price, amountPaid, denominations))
-                            break; // Valid amount, exit the loop
-                        else
-                            Console.WriteLine("Invalid amount entered. Please it must be greater than or equal to the price and a valid amount using the correct denominations.");
-                    } while (true);
+                    // Prompt for price
+                    decimal price = ConsoleHandler.PromptForDecimalInput("Enter price: ");
+                    // Prompt for valid amount paid
+                    decimal amountPaid = ConsoleHandler.PromptForValidAmountPaid(price, denominations);
                     // Calculate change
                     var change = calculator.CalculateChange(price, amountPaid);
-                    // Print the calculated change
-                    Console.WriteLine("Change to be returned: ");
-                    foreach (var item in change)
-                    {
-                        Console.WriteLine($"{item.Value} x {item.Key:C}");
+                    // Display calculated change
+                    if(change.Count == 0)
+                        Console.WriteLine("No change to be returned.");
+                    else{
+                        Console.WriteLine("Change to be returned: ");
+                        foreach (var item in change)
+                            Console.WriteLine($"{item.Value} x {item.Key:C}");
                     }
                 } while (true);
             }
